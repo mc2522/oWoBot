@@ -1,0 +1,27 @@
+{
+  "name": "owobot",
+  "version": "1.0.0",
+  "description": "oWoBot is a discord bot intended to perform tasks for the server's users such as playing music, responding to jokes, etc.",
+  "main": "oWoBot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mc2522/oWoBot.git"
+  },
+  "keywords": [
+    "discord-bot"
+  ],
+  "author": "Mike Cao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mc2522/oWoBot/issues"
+  },
+  "homepage": "https://github.com/mc2522/oWoBot#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "node": "^14.4.0"
+  }
+}
