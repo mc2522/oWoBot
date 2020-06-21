@@ -20,8 +20,12 @@
   },
   "homepage": "https://github.com/mc2522/oWoBot#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
-    "node": "^14.4.0"
+    "ffmpeg-static": "^4.2.4",
+    "node": "^14.4.0",
+    "opusscript": "0.0.7",
+    "ytdl-core": "^2.1.7"
   }
 }
