@@ -1,7 +1,9 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-const ytdl = require('ytdl-core')
 const fs = require('fs')
+
+const sendHelp = require('./functions/help')
+const play = require('./functions/play')
 
 // environment variables
 require('dotenv').config()
@@ -18,43 +20,14 @@ client.on('message', async msg => {
 
     // check commands/messages
     switch (true) {
+        // if need for help or commands, send commands back
+        case /!help/i.test(msg.content):
+        case /!commands/i.test(msg.content):
+            sendHelp(msg)
+            break
         // play music from a link
         case /!play\s*\w*/i.test(msg.content):
-            msg.reply('playing music')
-            const args = msg.content.split(' ')
-            if (args.length != 2) {
-                msg.reply('Invalid Link. Play music command : !play [link]')
-            }
-
-            const play = (connection, msg) => {
-                var server = servers[msg.guild.id]
-                server.dispatcher = connection.playStream(ytdl(server.queue[0], { filter: 'audioonly' }))
-                server.queue.shift()
-                server.dispatcher.on('end', () => {
-                    if (server.queue[0]) {
-                        play(connection, msg)
-                    } else {
-                        connection.disconnect()
-                    }
-                })
-            }
-            
-            const channel = client.channels.cache.get(process.env.MUSIC_ID)
-            // check for channel
-            if (!channel) msg.channel.send('Error: cannot locate music voice channel')
-            // join the channel
-            const connection = await channel.join().then(connection => {
-                const dispatch = connection.play(ytdl(args[1], { filter: 'audioonly' }))
-            }).catch(err => {
-                console.error(err)
-            })
-            // if no queue in server in msg's server (guild), create new queue for server and store it in servers object
-            /*if (!server[msg.guild.id])
-                servers[msg.guild.id] = { queue: [] }
-            var server = servers[msg.guild.id]
-            server.push(ars[1])
-            play(connection, msg)*/
-
+            play(msg, client)
             break
         // skip current music and move on to next in queue WIP
         case /!skip/i.test(msg.content):
@@ -90,8 +63,6 @@ client.on('message', async msg => {
             msg.reply('Command not recognized')
             break
     }
-
-    return
 })
 
 // server greeting for new members
