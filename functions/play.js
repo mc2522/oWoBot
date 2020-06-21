@@ -1,7 +1,6 @@
 const ytdl = require('ytdl-core')
 
 module.exports = play = (msg, client) => {
-
     const args = msg.content.split(/\s+/)
 
     // check if number of args is 2, since command + link
@@ -16,6 +15,7 @@ module.exports = play = (msg, client) => {
         return
     }
     
+    // WIP
     const play = (connection, msg) => {
         var server = servers[msg.guild.id]
         server.dispatcher = connection.playStream(ytdl(server.queue[0], { filter: 'audioonly' }))
@@ -35,6 +35,7 @@ module.exports = play = (msg, client) => {
     if (!channel) msg.channel.send('Error: cannot locate music voice channel')
     // join the channel
     const connection = channel.join().then(connection => {
+        // play mp3 downloaded from provided YouTube link
         const dispatch = connection.play(ytdl(args[1], { filter: 'audioonly' }))
     }).catch(err => {
         console.error(err)
