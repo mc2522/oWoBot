@@ -2,7 +2,7 @@ const Discord = require('discord.js')
 const client = new Discord.Client()
 const fs = require('fs')
 
-const sendHelp = require('./functions/help')
+const reply = require('./functions/reply')
 const play = require('./functions/play')
 
 // environment variables
@@ -23,7 +23,7 @@ client.on('message', async msg => {
         // if need for help or commands, send commands back
         case /!help/i.test(msg.content):
         case /!commands/i.test(msg.content):
-            sendHelp(msg)
+            reply.sendHelp(msg)
             break
         // play music from a link
         case /!play\s*\w*/i.test(msg.content):
@@ -46,21 +46,24 @@ client.on('message', async msg => {
             }
             if (msg.guild.connection) msg.guild.voiceConnection.disconnect()
             break
+        case /.*owo.*/i.test(msg.content):
+            reply.sendFace(msg)
+            break
         // ping
         case /ping/i.test(msg.content):
-            msg.channel.send('Pong')
+            reply.sendPong(msg)
             break
         // knock knock joke
         case /knock knock/i.test(msg.content):
-            msg.channel.send('Who\'s there?')
+            reply.sendKnock(msg)
             break
         // reply with avatar pic
         case /!avatar/i.test(msg.content):
-            msg.reply(msg.author.displayAvatarURL())
+            reply.sendAvatar(msg)
             break
         // if the message starts with !, then the command is not recognized since the previous conditionals didn't pass
         case /^!/.test(msg.content):
-            msg.reply('Command not recognized')
+            reply.sendError(msg)
             break
     }
 })
