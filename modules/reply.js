@@ -3,6 +3,8 @@ module.exports = {
         msg.reply(
             '\n**help/commands**:\t`!help` or `!commands`\n' + 
             '**play music**:\t`!play [YouTube Link]`\n' +
+            '**pause music:**\t`!pause`\n' +
+            '**resume music:**\t`!resume\n`' + 
             '( ﾟДﾟ)b'
         )
     },

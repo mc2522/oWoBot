@@ -2,8 +2,8 @@ const Discord = require('discord.js')
 const client = new Discord.Client()
 const fs = require('fs')
 
-const reply = require('./functions/reply')
-const player = require('./functions/player')
+const reply = require('./modules/reply')
+const player = require('./modules/player')
 
 // environment variables
 require('dotenv').config()
@@ -27,14 +27,14 @@ client.on('message', async msg => {
             break
         // play music from a link
         case /!play\s*\w*/i.test(msg.content):
-            player.play(msg, client)
+            player.play(servers, msg, client)
             break
         // pause music
         case /!pause\s*/i.test(msg.content):
-            player.pause(msg)
+            player.pause(servers[msg.guild.id], msg)
             break
         case /!resume\s*/i.test(msg.content):
-            player.resume(msg)
+            player.resume(servers[msg.guild.id], msg)
             break
         // skip current music and move on to next in queue WIP
         case /!skip\s*/i.test(msg.content):
