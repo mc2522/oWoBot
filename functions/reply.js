@@ -1,8 +1,9 @@
 module.exports = {
     sendHelp: (msg) => {
         msg.reply(
-            "\n**help/commands**:\t`!help` or `!commands`\n" + 
-            "**play music**:\t`!play [YouTube Link]`"
+            '\n**help/commands**:\t`!help` or `!commands`\n' + 
+            '**play music**:\t`!play [YouTube Link]`\n' +
+            '( ﾟДﾟ)b'
         )
     },
     sendFace: (msg) => {
@@ -18,6 +19,6 @@ module.exports = {
         msg.reply(msg.author.displayAvatarURL())
     },
     sendError: (msg) => {
-        msg.reply(`I don\'t know ${msg.content} :(`)
+        msg.reply(`I don\'t know what is: *${msg.content}*\n｡･ﾟﾟ･(>д<)･ﾟﾟ･｡`)
     }
 }

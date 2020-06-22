@@ -3,12 +3,13 @@ const client = new Discord.Client()
 const fs = require('fs')
 
 const reply = require('./functions/reply')
-const play = require('./functions/play')
+const player = require('./functions/player')
 
 // environment variables
 require('dotenv').config()
 
 var servers = {}
+var dispatcher;
 
 // log message to console when bot is ready to receive events
 client.on('ready', () => {console.log("oWoBot is listening...")})
@@ -17,25 +18,31 @@ client.on('ready', () => {console.log("oWoBot is listening...")})
 client.on('message', async msg => {
     // if receiving message from bot, don't do anything 
     if (msg.author.bot) return
-
     // check commands/messages
     switch (true) {
         // if need for help or commands, send commands back
-        case /!help/i.test(msg.content):
-        case /!commands/i.test(msg.content):
+        case /!help\s*/i.test(msg.content):
+        case /!commands\s*/i.test(msg.content):
             reply.sendHelp(msg)
             break
         // play music from a link
         case /!play\s*\w*/i.test(msg.content):
-            play(msg, client)
+            player.play(msg, client)
+            break
+        // pause music
+        case /!pause\s*/i.test(msg.content):
+            player.pause(msg)
+            break
+        case /!resume\s*/i.test(msg.content):
+            player.resume(msg)
             break
         // skip current music and move on to next in queue WIP
-        case /!skip/i.test(msg.content):
+        case /!skip\s*/i.test(msg.content):
             var server = servers[msg.guild.id]
             if (server.dispatcher) server.dispatcher.end()
             break
         // stop current music WIP
-        case /!stop/i.test(msg.content):
+        case /!stop\s*/i.test(msg.content):
             var server = servers[msg.guild.id]
             if (msg.guild.voiceConnection) {
                 for (let i = server.queue.length - 1; i >= 0; i--) {
@@ -46,19 +53,19 @@ client.on('message', async msg => {
             }
             if (msg.guild.connection) msg.guild.voiceConnection.disconnect()
             break
-        case /.*owo.*/i.test(msg.content):
+        case /^(?!!).*owo.*/i.test(msg.content):
             reply.sendFace(msg)
             break
         // ping
-        case /ping/i.test(msg.content):
+        case /ping\s*/i.test(msg.content):
             reply.sendPong(msg)
             break
         // knock knock joke
-        case /knock knock/i.test(msg.content):
+        case /knock knock\s*/i.test(msg.content):
             reply.sendKnock(msg)
             break
         // reply with avatar pic
-        case /!avatar/i.test(msg.content):
+        case /!avatar\s*/i.test(msg.content):
             reply.sendAvatar(msg)
             break
         // if the message starts with !, then the command is not recognized since the previous conditionals didn't pass
