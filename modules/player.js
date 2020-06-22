@@ -1,5 +1,7 @@
 const ytdl = require('ytdl-core')
 
+const playMusic = require('./playMusic')
+
 module.exports = {
     play: (servers, msg, client) => {
         const args = msg.content.split(/\s+/)
@@ -13,20 +15,6 @@ module.exports = {
             msg.reply('Give me an actual YouTube link pls')
             return
         }
-        // play music
-        const playMusic = (server, connection) => {
-            console.log(server)
-            server.dispatcher = connection.play(ytdl(server.queue[0], { filter: 'audioonly' }))
-            server.dispatcher.on('finish', () => {
-                msg.channel.send('Moving to next song')
-                server.queue.shift()
-                if (server.queue[0]) {
-                    playMusic(server, connection)
-                } else {
-                    connection.disconnect()
-                }
-            })
-        }
         // get the music voice channel to join
         const channel = client.channels.cache.get(process.env.MUSIC_ID)
         // check for channel
@@ -36,6 +24,7 @@ module.exports = {
             // check if there is an array (queue) in the queues object with the associated msg.guild.id, initialize if none
             if (!servers[msg.guild.id])
                 servers[msg.guild.id] = { queue: [] }
+            servers[msg.guild.id].connection = connection
             let server = servers[msg.guild.id]
             // if there is a song in queue, just push song into queue and don't play immediately
             if (server.queue.length > 0) {
@@ -45,7 +34,7 @@ module.exports = {
             }
             // otherwise push the song into queue and play immediately
             server.queue.push(args[1])
-            playMusic(server, connection)
+            playMusic(server, msg)
         }).catch(err => {
             console.error(err)
         })
@@ -54,14 +43,32 @@ module.exports = {
         if (server.dispatcher) {
             server.dispatcher.pause()
         } else {
-            msg.reply('No video playing...')
+            msg.reply('No audio playing...')
         }
     },
+    // resume paused
     resume: (server, msg) => {
         if (server.dispatcher) {
             server.dispatcher.resume()
         } else {
-            msg.reply('No video paused...')
+            msg.reply('No audio paused...')
         }
     },
+    // skip current audio
+    skip: (server, msg) => {
+        if (server.dispatcher) {
+            // get rid of first audio 
+            server.queue.shift()
+            // if something is left in the queue, play
+            if (server.queue.length > 0) {
+                playMusic(server, msg)
+            // else disconnect
+            } else {
+                server.connection.disconnect()
+                msg.channel.send('')
+            }
+        } else {
+            msg.channel.send('Song request queue empty, `!play [YouTube Link]` to play music from YouTube')
+        }
+    }
 } 

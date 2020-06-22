@@ -9,7 +9,6 @@ const player = require('./modules/player')
 require('dotenv').config()
 
 var servers = {}
-var dispatcher;
 
 // log message to console when bot is ready to receive events
 client.on('ready', () => {console.log("oWoBot is listening...")})
@@ -38,8 +37,7 @@ client.on('message', async msg => {
             break
         // skip current music and move on to next in queue WIP
         case /!skip\s*/i.test(msg.content):
-            var server = servers[msg.guild.id]
-            if (server.dispatcher) server.dispatcher.end()
+            player.skip(servers[msg.guild.id], msg)
             break
         // stop current music WIP
         case /!stop\s*/i.test(msg.content):

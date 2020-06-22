@@ -21,6 +21,6 @@ module.exports = {
         msg.reply(msg.author.displayAvatarURL())
     },
     sendError: (msg) => {
-        msg.reply(`I don\'t know what is: *${msg.content}*\n｡･ﾟﾟ･(>д<)･ﾟﾟ･｡`)
+        msg.reply('I don\'t know what is: `' + msg.content + '`\n｡･ﾟﾟ･(>д<)･ﾟﾟ･｡')
     }
 }
