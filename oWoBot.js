@@ -33,14 +33,14 @@ client.on('message', async msg => {
             if (servers[msg.guild.id]) {
                 player.pause(servers[msg.guild.id], msg)
             } else {
-                msg.reply('No audio playing')
+                msg.reply('No audio playing... ヽ( `д´*)ノ')
             }
             break
         case /!resume\s*/i.test(msg.content):
             if (servers[msg.guild.id]) {
                 player.resume(servers[msg.guild.id], msg)
             } else {
-                msg.reply('No audio paused')
+                msg.reply('No audio paused... ヽ( `д´*)ノ')
             }
             break
         // skip current music and move on to next in queue WIP
@@ -48,7 +48,7 @@ client.on('message', async msg => {
             if (servers[msg.guild.id]) {
                 player.skip(servers[msg.guild.id], msg)
             } else {
-                msg.reply('No audio playing')
+                msg.reply('No audio playing... ヽ( `д´*)ノ')
             }
             break
         case /^(?!!).*owo.*/i.test(msg.content):
@@ -77,7 +77,7 @@ client.on('message', async msg => {
 client.on('guildMemberAdd', async member => {
     const channel = client.channels.cache.find(process.env.GENERAL_ID)
     if (!channel) return
-    channel.send(`Here comes ${member}!!!`)
+    channel.send(`Here comes ${member}! ☆*:.｡.o(≧▽≦)o.｡.:*☆`)
 })
 
 client.login(process.env.DISCORD_TOKEN)

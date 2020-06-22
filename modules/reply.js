@@ -5,6 +5,7 @@ module.exports = {
             '**play music**:\t`!play [YouTube Link]`\n' +
             '**pause music:**\t`!pause`\n' +
             '**resume music:**\t`!resume\n`' + 
+            '**skip music:**\t`!skip`\n' +
             '( ﾟДﾟ)b'
         )
     },

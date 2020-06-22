@@ -7,7 +7,7 @@ const playMusic = (server, msg) => {
         if (server.queue[0]) {
             playMusic(server, msg)
         } else {
-            msg.channel.send('Song request queue empty, `!play [YouTube Link]` to play music from YouTube')
+            msg.channel.send('Song request queue empty .･ﾟﾟ･(／ω＼)･ﾟﾟ･.')
             server.connection.disconnect()
             server.dispatcher = undefined
         }
