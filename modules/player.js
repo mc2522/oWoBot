@@ -65,7 +65,8 @@ module.exports = {
             // else disconnect
             } else {
                 server.connection.disconnect()
-                msg.channel.send('')
+                server.dispatcher = undefined
+                msg.channel.send('Song request queue empty, `!play [YouTube Link]` to play music from YouTube')
             }
         } else {
             msg.channel.send('Song request queue empty, `!play [YouTube Link]` to play music from YouTube')

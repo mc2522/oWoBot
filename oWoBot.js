@@ -30,26 +30,26 @@ client.on('message', async msg => {
             break
         // pause music
         case /!pause\s*/i.test(msg.content):
-            player.pause(servers[msg.guild.id], msg)
+            if (servers[msg.guild.id]) {
+                player.pause(servers[msg.guild.id], msg)
+            } else {
+                msg.reply('No audio playing')
+            }
             break
         case /!resume\s*/i.test(msg.content):
-            player.resume(servers[msg.guild.id], msg)
+            if (servers[msg.guild.id]) {
+                player.resume(servers[msg.guild.id], msg)
+            } else {
+                msg.reply('No audio paused')
+            }
             break
         // skip current music and move on to next in queue WIP
         case /!skip\s*/i.test(msg.content):
-            player.skip(servers[msg.guild.id], msg)
-            break
-        // stop current music WIP
-        case /!stop\s*/i.test(msg.content):
-            var server = servers[msg.guild.id]
-            if (msg.guild.voiceConnection) {
-                for (let i = server.queue.length - 1; i >= 0; i--) {
-                    server.queue.splice(i, 1)
-                }
-                server.dispatcher.end()
-                console.log('Stopped the queue')
+            if (servers[msg.guild.id]) {
+                player.skip(servers[msg.guild.id], msg)
+            } else {
+                msg.reply('No audio playing')
             }
-            if (msg.guild.connection) msg.guild.voiceConnection.disconnect()
             break
         case /^(?!!).*owo.*/i.test(msg.content):
             reply.sendFace(msg)
