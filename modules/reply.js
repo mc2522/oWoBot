@@ -6,6 +6,7 @@ module.exports = {
             '**pause music:**\t`!pause`\n' +
             '**resume music:**\t`!resume\n`' + 
             '**skip music:**\t`!skip`\n' +
+            '**stop music/disconnect:**\t`!stop` or `!disconnect`\n' + 
             '( ﾟДﾟ)b'
         )
     },

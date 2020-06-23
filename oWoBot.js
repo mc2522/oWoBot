@@ -20,9 +20,16 @@ client.on('message', async msg => {
     // check commands/messages
     switch (true) {
         // if need for help or commands, send commands back
-        case /!help\s*/i.test(msg.content):
-        case /!commands\s*/i.test(msg.content):
+        case /!(?:help|commands)\s*/i.test(msg.content):
             reply.sendHelp(msg)
+            break
+        // stop music and leave the voice channel
+        case /(?:stop|disconnect)\s*/i.test(msg.content):
+            if (servers[msg.guild.id]) {
+                player.disconnect(servers[msg.guild.id], msg)
+            } else {
+                msg.reply('Not in a voice chat!\nヽ( `д´*)ノ')
+            }
             break
         // join voice channel of user
         case /!join\s*/i.test(msg.content):
@@ -33,7 +40,7 @@ client.on('message', async msg => {
                     servers[msg.guild.id] = {}
                 servers[msg.guild.id].connection = connection
             } else {
-                msg.reply('Join a channel first! ヽ( `д´*)ノ')
+                msg.reply('Join a channel first!\nヽ( `д´*)ノ')
             }
             break
         // play music from a link
@@ -45,14 +52,15 @@ client.on('message', async msg => {
             if (servers[msg.guild.id]) {
                 player.pause(servers[msg.guild.id], msg)
             } else {
-                msg.reply('No audio playing... ヽ( `д´*)ノ')
+                msg.reply('No audio playing...\nヽ( `д´*)ノ')
             }
             break
+        // resume music
         case /!resume\s*/i.test(msg.content):
             if (servers[msg.guild.id]) {
                 player.resume(servers[msg.guild.id], msg)
             } else {
-                msg.reply('No audio paused... ヽ( `д´*)ノ')
+                msg.reply('No audio paused...\n(*｀益´*)')
             }
             break
         // skip current music and move on to next in queue WIP
@@ -60,9 +68,10 @@ client.on('message', async msg => {
             if (servers[msg.guild.id]) {
                 player.skip(servers[msg.guild.id], msg)
             } else {
-                msg.reply('No audio playing... ヽ( `д´*)ノ')
+                msg.reply('No audio playing...\n<(｀^´)>')
             }
             break
+        // respond with face
         case /^(?!!).*owo.*/i.test(msg.content):
             reply.sendFace(msg)
             break
@@ -89,7 +98,7 @@ client.on('message', async msg => {
 client.on('guildMemberAdd', async member => {
     const channel = client.channels.cache.find(process.env.GENERAL_ID)
     if (!channel) return
-    channel.send(`Here comes ${member}! ☆*:.｡.o(≧▽≦)o.｡.:*☆`)
+    channel.send(`Here comes ${member}!\n☆*:.｡.o(≧▽≦)o.｡.:*☆`)
 })
 
 client.login(process.env.DISCORD_TOKEN)
