@@ -4,7 +4,8 @@
   "description": "oWoBot is a discord bot intended to perform tasks for the server's users such as playing music, responding to jokes, etc.",
   "main": "oWoBot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node oWoBot.js"
   },
   "repository": {
     "type": "git",
