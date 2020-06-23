@@ -42,6 +42,7 @@ module.exports = {
         if (server.connection) {
             server.connection.disconnect()
             server.dispatcher = undefined
+            server.connection = undefined
         } else {
             msg.reply('Not playing anything!\n（；¬＿¬)')
         }
