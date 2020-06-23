@@ -24,6 +24,18 @@ client.on('message', async msg => {
         case /!commands\s*/i.test(msg.content):
             reply.sendHelp(msg)
             break
+        // join voice channel of user
+        case /!join\s*/i.test(msg.content):
+            if (msg.member.voice.channel) {
+                const connection = await msg.member.voice.channel.join()
+                // if no server
+                if (!servers[msg.guild.id]) 
+                    servers[msg.guild.id] = {}
+                servers[msg.guild.id].connection = connection
+            } else {
+                msg.reply('Join a channel first! ヽ( `д´*)ノ')
+            }
+            break
         // play music from a link
         case /!play\s*\w*/i.test(msg.content):
             player.play(servers, msg, client)

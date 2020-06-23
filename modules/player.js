@@ -15,29 +15,47 @@ module.exports = {
             msg.reply('Give me an actual YouTube link pls ヽ( `д´*)ノ')
             return
         }
+        // check if in voice channel, and has an initialized server
+        if (servers[msg.guild.id] && servers[msg.guild.id].connection) {
+            if (!servers[msg.guild.id].queue)
+                servers[msg.guild.id].queue = [] 
+            // servers[msg.guild.id].connection = connection
+            let server = servers[msg.guild.id]
+            // if there is a song in queue, just push song into queue and don't play immediately
+            if (server.queue.length > 0) {
+                server.queue.push(args[1])
+                msg.reply(`Added to song request queue position: **${server.queue.length}**    (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧`)
+                return
+            }
+            // otherwise push the song into queue and play immediately
+            server.queue.push(args[1])
+            playMusic(server, msg)
+        } else {
+            msg.reply('Join a channel first! ヽ( `д´*)ノ')
+        }
         // get the music voice channel to join
-        const channel = client.channels.cache.get(process.env.MUSIC_ID)
+        // const channel = client.channels.cache.get(process.env.MUSIC_ID)
         // check for channel
-        if (!channel) msg.channel.send('Error: cannot locate music voice channel ヽ( `д´*)ノ')
+        // if (!channel) msg.channel.send('Error: cannot locate music voice channel ヽ( `д´*)ノ')
         // join the channel
-        const connection = channel.join().then(connection => {
+        //const connection = channel.join().then(connection => {
             // check if there is an array (queue) in the queues object with the associated msg.guild.id, initialize if none
-            if (!servers[msg.guild.id])
+            /*if (!servers[msg.guild.id])
                 servers[msg.guild.id] = { queue: [] }
             servers[msg.guild.id].connection = connection
             let server = servers[msg.guild.id]
             // if there is a song in queue, just push song into queue and don't play immediately
             if (server.queue.length > 0) {
                 server.queue.push(args[1])
-                msg.reply(`Added to song request queue position: **${server.queue.length}** (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧`)
+                msg.reply(`Added to song request queue position: **${server.queue.length}**    (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧`)
                 return
             }
             // otherwise push the song into queue and play immediately
             server.queue.push(args[1])
             playMusic(server, msg)
-        }).catch(err => {
+        /*}).catch(err => {
             console.error(err)
-        })
+        })*/
     },
     pause: (server, msg) => {
         if (server.dispatcher) {
